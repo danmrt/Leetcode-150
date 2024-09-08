@@ -1,0 +1,46 @@
+#Leetcode Problem 4: Median of Two Sorted Arrays
+
+class Solution(object):
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        A = nums1
+        B = nums2
+        total = len(A) + len(B)
+        half = total // 2
+
+        if len(B) < len(A):
+            A = nums2
+            B = nums1
+
+        l = 0
+        r = len(A) - 1
+
+        while True:
+            i = (l + r) // 2 #A
+            j = half - ( i + 1 ) - 1 #B
+
+            A_left = A[i] if i >= 0 else float("-infinity")
+            A_right = A[i + 1] if (i + 1) < len(A) else float("infinity")
+            B_left = B[j] if j >= 0 else float("-infinity")
+            B_right = B[j + 1] if (j + 1) < len(B) else float("infinity")
+
+            #partition is correct
+            if A_left <= B_right and B_left <= A_right:
+                #odd
+                if total % 2:
+                    return min( A_right, B_right )
+                else:
+                    return float(max( A_left, B_left ) + min( A_right, B_right )) / 2
+            #we have to shrink the left partition of X
+            elif A_left > B_right:
+                r = i - 1
+            #we have to increase the left partition of X
+            else:
+                l = i + 1
+
+
+        
